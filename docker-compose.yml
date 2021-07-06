@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+ # Nginx server configuration
+  web:
+    image: nginx:1.17
+    container_name: gemini-webserver
+    depends_on:
+      - docker-mysql
+      - php
+    links:
+      - docker-mysql
+      - php
+    volumes:
+      - ./gemini-back:/var/www/html
+      - ./nginx:/etc/nginx/conf.d/
+    ports:
+      - "8085:80"
+ # Php-fpm configuration
+  php:
+    build:
+        context: ./docker
+    volumes:
+      - ./gemini-back:/var/www/html
+      - ./php:/usr/local/etc/php/php.ini
+
+# Mysql configuration
+  docker-mysql:
+    image: mysql:5.7
+    container_name: gemini-mysql
+    restart: always
+    environment:
+        - MYSQL_DATABASE=gemini
+        - MYSQL_ROOT_PASSWORD=root123
+        - MYSQL_USER=user
+        - MYSQL_PASSWORD=user123
+    ports:
+        - "3306:3306"
+    volumes:
+        - ./dbdata:/var/lib/mysql
+        - ./mysql-seed:/docker-entrypoint-initdb.d:ro
