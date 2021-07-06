@@ -105,7 +105,6 @@ export default {
   },
   methods:{
     save(){
-      this.$v.editContact.$touch()
       this.$emit('save', this.editContact)
     },
   },
