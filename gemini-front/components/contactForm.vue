@@ -105,7 +105,35 @@ export default {
   },
   methods:{
     save(){
-      this.$emit('save', this.editContact)
+      if(this.isValidated()){
+        this.$emit('save', this.editContact)
+      }
+    },
+    isValidated(){
+      let valid = true
+      if(!this.editContact.firstName){
+        valid = false
+      }
+
+      if(!this.editContact.lastName){
+        valid = false
+      }
+
+      if(!this.editContact.dateOfBirth){
+        valid = false
+      }
+
+      if(!this.editContact.telephone) {
+        valid = false
+      }
+
+      if(!this.editContact.email){
+        valid = false
+      }
+      if(!this.editContact.contactTypeId){
+        valid = false
+      }
+      return  valid
     },
   },
 }
